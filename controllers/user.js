@@ -110,3 +110,32 @@ exports.deleteUser = async (req, res) => {
       });
     });
 };
+
+// create a function for login 
+
+exports.loginUser = async (req, res) => {
+  await UserModel.findOne({
+      email: req.body.email,
+      password: req.body.password,
+    })
+    .then((data) => {
+
+      if (!data) {
+        res.status(404).send({
+          message: `User not found.`,
+        });
+      } else {
+        res.send({
+          message: "User login successfully!",
+        });
+      }
+    }
+    )
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message,
+      });
+    }
+    );
+
+}
