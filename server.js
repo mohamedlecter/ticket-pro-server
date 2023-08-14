@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const dbConfig = require("./config/config.js");
 const UserRoute = require("./routes/user");
+const AdminRoute = require("./routes/admin");
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.use("/user", UserRoute);
+app.use("/admin", AdminRoute);
 
 app.get("/", (req, res) => {
   res.json({
@@ -35,5 +37,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(4000, () => {
-  console.log("Server is listening on port 3000");
+  console.log("Server is listening on port 4000");
 });

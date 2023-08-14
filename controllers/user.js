@@ -1,4 +1,5 @@
 const UserModel = require("../models/user");
+const AdminModel = require("../models/admin"); 
 
 
 exports.createUser = async (req, res) => {
@@ -114,6 +115,8 @@ exports.deleteUser = async (req, res) => {
 // create a function for login 
 
 exports.loginUser = async (req, res) => {
+  console.log(req.body.email)
+  console.log(req.body.password)
   await UserModel.findOne({
       email: req.body.email,
       password: req.body.password,
@@ -138,4 +141,82 @@ exports.loginUser = async (req, res) => {
     }
     );
 
+}
+
+// create a function for admin login 
+exports.adminLogin = async (req, res) => {
+  console.log(req.body.birthdate);
+
+
+  await AdminModel.findOne({
+      adminId: req.body.adminId,
+      birthdate: req.body.birthdate,
+      isAdmin: true
+    })
+    .then((data) => {
+
+      if (!data) {
+        res.status(404).send({
+          message: `User not found.`,
+        });
+      } else {
+        res.send({
+          message: "Admin login successfully!",
+        });
+      }
+    }
+    )
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message,
+      });
+    }
+    );
+}
+
+// create a function for admin signup
+exports.adminSignup = async (req, res) => {
+if (!req.body.adminId || !req.body.birthdate) {
+    res.status(400).send({
+      message: "Admin ID and birthdate are required!",
+    });
+    return;
+  }
+
+
+
+  const admin = new AdminModel({
+    adminId: req.body.adminId,
+    birthdate: req.body.birthdate,
+    isAdmin: true,
+  });
+
+  await admin
+    .save()
+    .then((data) => {
+      res.send({
+        message: "admin created successfully!!",
+        user: data,
+      });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while creating user",
+      });
+    });
+}
+
+// create a function to get the admins 
+exports.findAllAdmins = async (req, res) => {
+
+  try {
+    const user = await AdminModel.find({
+      isAdmin: true
+    });
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(404).json({
+      message: error.message
+    });
+  }
 }
