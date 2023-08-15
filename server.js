@@ -5,8 +5,11 @@ const dbConfig = require("./config/config.js");
 const UserRoute = require("./routes/user");
 const AdminRoute = require("./routes/admin");
 
+require("dotenv").config();
+
 const app = express();
 
+let port = process.env.PORT;
 mongoose.Promise = global.Promise;
 
 mongoose
@@ -36,6 +39,5 @@ app.get("/", (req, res) => {
   });
 });
 
-app.listen(4000, () => {
-  console.log("Server is listening on port 4000");
-});
+app.listen(port || 4000, () => {
+console.log(`Server is listening on port ${process.env.PORT || 4000}`);});
