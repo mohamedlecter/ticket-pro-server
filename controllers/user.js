@@ -130,6 +130,7 @@ exports.loginUser = async (req, res) => {
       } else {
         res.send({
           message: "User login successfully!",
+          user: data
         });
       }
     }
