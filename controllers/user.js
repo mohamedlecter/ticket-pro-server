@@ -115,10 +115,8 @@ exports.deleteUser = async (req, res) => {
 // create a function for login 
 
 exports.loginUser = async (req, res) => {
-  console.log(req.body.email)
-  console.log(req.body.password)
   await UserModel.findOne({
-      email: req.body.email,
+      name: req.body.name,
       password: req.body.password,
     })
     .then((data) => {
